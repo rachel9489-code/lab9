@@ -10,12 +10,36 @@ int main()
     bp2 = std::move(bp3);//move operator=
     bp3 = bp2; //copy operator=
 
-    bookPtr* bp{ new bookPtr };
-    delete bp; 
+    bookPtr* bp{ new bookPtr{book{}} };
+    //delete bp; 
 
     std::unique_ptr<bookPtr> up1;
 
-    std::unique_ptr<bookPtr> up2{ std::make_unique(book{"title",1,10000}) };
+    auto up2{std::make_unique<bookPtr>(book{"title", 1, 10000})};
     
+    up1 = std::move(up2);
+    up1->print();
+    
+    auto sp1{std::make_shared<bookPtr>(book{"shared", 2, 20000})};
+
+    std::shared_ptr<bookPtr> sp2{sp1};
+
+    std::cout << sp1.use_count() << " " << sp2.use_count() << std::endl;
+
+    std::weak_ptr<bookPtr> wp1{sp1};
+
+    std::cout << sp1.use_count() << " " << sp2.use_count() << std::endl;
+
+    sp1.reset();
+
+    std::cout << sp1.use_count() << " " << sp2.use_count() << std::endl;
+
+    if (!wp1.expired()) sp1 = wp1.lock();
+
+    std::cout << sp1.use_count() << " " << sp2.use_count() << std::endl;
+
+
+    delete bp;
+
     return 0;
 }

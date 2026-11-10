@@ -13,7 +13,7 @@ namespace HanYoonseo2649055
         }
         ~bookPtr()
         {
-            std::cout << "~destructor\n";
+            //std::cout << "~destructor\n";
             delete bPtr;
         }
         bookPtr(const bookPtr& copy)
@@ -48,6 +48,13 @@ namespace HanYoonseo2649055
                 move.bPtr = nullptr;
             }
             return *this;
+        }
+        void print() const
+        {
+            if (bPtr)
+                std::cout << *bPtr;
+            else
+                std::cout << "no data (nullptr)\n";
         }
     };
 }
